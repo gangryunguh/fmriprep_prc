@@ -5,7 +5,7 @@ import re
 import csv
 
 def computeAvg(file, fdmap):
-    with open(file, 'rU') as infile:
+    with open(file, 'r') as infile:
         reader = csv.DictReader(infile, delimiter='\t', skipinitialspace=True)
         count = 0
         sum = 0.0
@@ -38,7 +38,14 @@ def explore(dir, fdmap):
 
 if __name__ == '__main__':
 
+    # you can set the os.environ['OUTPUT_FILE'] and os.environ['INPUT_PATH'] below or,
+    # outside from this app
+    os.environ['OUTPUT_FILE'] = os.getcwd() + '/' + 'result.tsv'
+    os.environ['INPUT_PATH']  = os.getcwd()
+
+    fptr = open(os.environ['OUTPUT_FILE'], 'w')
     framewise_displacements = dict() # initialize map
+    os.chdir(os.environ['INPUT_PATH'])
     subdirs = os.listdir()
     for sdir in subdirs:
         if os.path.isdir(sdir):
@@ -47,7 +54,7 @@ if __name__ == '__main__':
             os.chdir(cwd)
 
     fw_disp_dicts = [{'file': f, 'average': avg} for f,avg in framewise_displacements.items()]
-    with open('result.csv', mode='wt') as avg_file:
+    with open(os.environ['OUTPUT_FILE'], mode='w') as avg_file:
         csv_writer = csv.DictWriter(avg_file, delimiter='\t', fieldnames=['file', 'average'])
         csv_writer.writeheader()
         for row in fw_disp_dicts:
