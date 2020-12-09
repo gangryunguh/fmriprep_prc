@@ -53,7 +53,12 @@ if __name__ == '__main__':
             explore(sdir,framewise_displacements)
             os.chdir(cwd)
 
-    fw_disp_dicts = [{'file': f, 'average': avg} for f,avg in framewise_displacements.items()]
+    fkeys = sorted(framewise_displacements.keys())
+    fw_sorted_dispplacements = dict()
+    for k in fkeys:
+        fw_sorted_dispplacements[k] = framewise_displacements[k]
+
+    fw_disp_dicts = [{'file': f, 'average': avg} for f, avg in fw_sorted_dispplacements.items()]
     with open(os.environ['OUTPUT_FILE'], mode='w') as avg_file:
         csv_writer = csv.DictWriter(avg_file, delimiter='\t', fieldnames=['file', 'average'])
         csv_writer.writeheader()
