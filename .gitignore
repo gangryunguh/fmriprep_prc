@@ -6,3 +6,4 @@
 *.bin
 output*.txt
 \#*\#
+.DS_Store
